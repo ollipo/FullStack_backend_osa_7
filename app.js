@@ -14,14 +14,14 @@ const app = express()
 mongoose.set('useCreateIndex', true)
 
 mongoose.connect(config.MONGODB_URI, { useNewUrlParser: true, useUnifiedTopology: true })
-  .then(() => {
-    logger.info('connected to MongoDB')
-  })
-  .catch((error) => {
-    logger.error('error connection to MongoDB:', error.message)
-  })
+	.then(() => {
+		logger.info('connected to MongoDB')
+	})
+	.catch((error) => {
+		logger.error('error connection to MongoDB:', error.message)
+	})
 mongoose.set('useFindAndModify', false)
-
+mongoose.set('debug', true)
 app.use(cors())
 app.use(express.json())
 app.use(middleware.tokenExtractor)
