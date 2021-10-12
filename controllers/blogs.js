@@ -8,8 +8,7 @@ router.get('/', async (request, response) => {
 	const blogs = await Blog
 		.find({})
 		.populate('user', { username: 1, name: 1 })
-		.populate('comments', { comment: 1, id: 1 })
-	console.log('blogs: ', blogs)
+		.populate('comments')
 
 	response.json(blogs)
 })
@@ -36,7 +35,9 @@ router.delete('/:id', async (request, response) => {
 })
 
 router.put('/:id', async (request, response) => {
+	console.log('requestBody: ', request.body)
 	const blog = request.body
+	console.log('blog: ', blog)
 	const updatedBlog = await Blog
 		.findByIdAndUpdate(request.params.id, blog, { new: true, populate: { path: 'user' } })
 	console.log('updatedBlog: ', updatedBlog)
@@ -76,8 +77,8 @@ router.post('/:id/comments', async (request, response) => {
 	const blog = await Blog.findById(request.params.id)
 	blog.comments = blog.comments.concat(savedComment._id)
 	const savedBlog = await blog.save()
-	console.log('savedBlog: ', savedBlog)
-	response.status(201).json(savedBlog)
+	const populatedBlog = await Blog.find(savedBlog).populate('comments')
+	response.status(201).json(populatedBlog)
 })
 
 module.exports = router

@@ -21,7 +21,7 @@ mongoose.connect(config.MONGODB_URI, { useNewUrlParser: true, useUnifiedTopology
 		logger.error('error connection to MongoDB:', error.message)
 	})
 mongoose.set('useFindAndModify', false)
-mongoose.set('debug', true)
+//mongoose.set('debug', true)
 app.use(cors())
 app.use(express.json())
 app.use(middleware.tokenExtractor)
